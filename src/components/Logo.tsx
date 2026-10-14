@@ -18,7 +18,7 @@ export function Logo({ size = "md", className = "" }: { size?: "md" | "lg"; clas
           <path d="M2 21 C 38 4, 82 0, 118 7" stroke="currentColor" strokeWidth="2.6" fill="none" strokeLinecap="round" />
           <path d="M16 22 C 50 9, 86 6, 116 12" stroke="currentColor" strokeWidth="1.1" fill="none" strokeLinecap="round" />
         </svg>
-        <span className={`font-display font-semibold italic text-cream ${big ? "text-7xl md:text-9xl" : "text-[28px]"}`}>Flex</span>
+        <span className={`font-display font-semibold italic text-cream ${big ? "text-[clamp(3.75rem,10svh,4.5rem)] md:text-9xl" : "text-[28px]"}`}>Flex</span>
       </span>
       <span className={`title-caps ${big ? "mt-1 text-2xl tracking-[0.2em] md:text-4xl" : "text-[11px] tracking-[0.14em]"}`}>
         <span className="text-cream">Hair</span>

@@ -86,9 +86,9 @@ export function Gallery() {
         </div>
 
         <div className="mt-10 text-center">
-          <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" className="btn-outline">
-            <InstagramIcon className="h-4 w-4" />
-            Suivre @{site.social.instagramHandle}
+          <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" className="btn-outline max-w-full">
+            <InstagramIcon className="h-4 w-4 shrink-0" />
+            <span className="min-w-0 break-all">Suivre @{site.social.instagramHandle}</span>
           </a>
           <Tbc show={placeholders.social} />
         </div>

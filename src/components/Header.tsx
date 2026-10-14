@@ -65,7 +65,7 @@ export function Header() {
         </div>
 
         {open && (
-          <nav id="menu-mobile" className="max-h-[calc(100svh-72px)] overflow-y-auto border-t border-ink-line px-4 pb-6 lg:hidden" aria-label="Navigation mobile">
+          <nav id="menu-mobile" className="stripes h-[calc(100svh-72px)] overflow-y-auto border-t border-ink-line bg-ink px-4 pb-28 lg:hidden" aria-label="Navigation mobile">
             {content.nav.map((l) => (
               <Link
                 key={l.href}

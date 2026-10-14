@@ -151,7 +151,7 @@ export function BookingWizard({ today, closedDays, initialService }: { today: st
                       <span className="block font-semibold">{s.name}</span>
                       <span className="text-xs text-muted">{s.duration} min</span>
                     </span>
-                    <span className="font-display text-xl text-gold">{s.price} €</span>
+                    <span className="shrink-0 whitespace-nowrap font-display text-xl text-gold">{s.price} €</span>
                   </span>
                 </button>
               ))}
@@ -173,7 +173,7 @@ export function BookingWizard({ today, closedDays, initialService }: { today: st
                         <span className="block font-semibold">{x.name}</span>
                         <span className="text-xs text-muted">+{x.duration} min</span>
                       </span>
-                      <span className="font-display text-lg text-gold">+{x.price} €</span>
+                      <span className="shrink-0 whitespace-nowrap font-display text-lg text-gold">+{x.price} €</span>
                     </label>
                   );
                 })}
