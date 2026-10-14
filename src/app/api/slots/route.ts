@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { availableSlots } from "@/lib/reservations";
+import { getSlots } from "@/lib/reservations";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
-  const date = searchParams.get("date") ?? "";
-  const service = searchParams.get("service") ?? "";
-  return NextResponse.json({ slots: await availableSlots(date, service) });
+  const q = new URL(req.url).searchParams;
+  const extras = (q.get("extras") ?? "").split(",").filter(Boolean);
+  const slots = await getSlots(q.get("date") ?? "", q.get("service") ?? "", q.get("barber") || null, extras);
+  return NextResponse.json({ slots }, { headers: { "Cache-Control": "no-store" } });
 }

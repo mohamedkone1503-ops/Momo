@@ -14,10 +14,10 @@ export function LoginForm() {
         type="password"
         required
         autoComplete="current-password"
-        className="w-full rounded-xl border border-ink-line bg-ink px-4 py-3.5 focus:border-gold focus:outline-none"
+        className="w-full rounded-[6px] border border-ink-line bg-ink px-4 py-3.5 focus:border-gold focus:outline-none"
       />
       {state?.error && <p className="text-sm text-barber-red" role="alert">{state.error}</p>}
-      <button type="submit" disabled={pending} className="w-full rounded-full bg-gold py-3.5 text-sm font-bold uppercase tracking-[0.15em] text-ink disabled:opacity-60">
+      <button type="submit" disabled={pending} className="btn-gold w-full">
         {pending ? "Connexion…" : "Se connecter"}
       </button>
     </form>

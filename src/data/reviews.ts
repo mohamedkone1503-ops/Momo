@@ -1,11 +1,13 @@
 /**
  * AVIS CLIENTS
  * ------------------------------------------------------------------
- * [À CONFIRMER] Laissé vide volontairement : n'ajoutez ici que de vrais
- * avis (ex. copiés depuis Google, avec l'accord des clients).
- * La section « Avis » ne s'affiche que si cette liste n'est pas vide.
+ * [À CONFIRMER] Avis PROVISOIRES fournis par le brief : à remplacer par
+ * de vrais avis Google avant la mise en ligne.
  */
+export type Review = { author: string; text: string; rating: number; aConfirmer?: boolean };
 
-export type Review = { author: string; text: string; rating: number };
-
-export const reviews: Review[] = [];
+export const reviews: Review[] = [
+  { author: "Karim", text: "Meilleur dégradé que j'ai eu à Paris, propre et rapide.", rating: 5, aConfirmer: true },
+  { author: "Moussa", text: "Super accueil, je viens avec mon fils chaque mois.", rating: 5, aConfirmer: true },
+  { author: "Jordan", text: "Contours ultra précis, ils savent travailler les cheveux afro.", rating: 5, aConfirmer: true },
+];

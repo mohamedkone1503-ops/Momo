@@ -1,4 +1,4 @@
-import { bookingRules } from "@/data/booking";
+import { bookingConfig } from "@/data/booking";
 import { site } from "@/data/site";
 
 export const toMinutes = (hhmm: string) => {
@@ -7,18 +7,19 @@ export const toMinutes = (hhmm: string) => {
 };
 export const fromMinutes = (n: number) =>
   `${String(Math.floor(n / 60)).padStart(2, "0")}:${String(n % 60).padStart(2, "0")}`;
+export const fmtTime = (hhmm: string) => hhmm.replace(":", "h");
 
-/** Date et heure actuelles à Paris, au format { date: "YYYY-MM-DD", minutes } */
-export function parisNow() {
+/** Date, heure et jour actuels à Paris. */
+export function parisNow(at = new Date()) {
   const parts = new Intl.DateTimeFormat("en-CA", {
-    timeZone: bookingRules.timeZone,
+    timeZone: bookingConfig.timeZone,
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
     hour: "2-digit",
     minute: "2-digit",
     hourCycle: "h23",
-  }).formatToParts(new Date());
+  }).formatToParts(at);
   const get = (t: string) => parts.find((p) => p.type === t)!.value;
   return {
     date: `${get("year")}-${get("month")}-${get("day")}`,
@@ -32,19 +33,29 @@ export function addDays(date: string, n: number) {
   return d.toISOString().slice(0, 10);
 }
 
-/** Horaires du jour (index site.hours : 0 = lundi) */
-export function hoursFor(date: string) {
-  const jsDay = new Date(`${date}T12:00:00Z`).getUTCDay(); // 0 = dimanche
-  return site.hours[(jsDay + 6) % 7];
-}
+/** Index dans site.hours (0 = lundi) */
+export const dayIndex = (date: string) => (new Date(`${date}T12:00:00Z`).getUTCDay() + 6) % 7;
+export const hoursFor = (date: string) => site.hours[dayIndex(date)];
 
-export function formatDateFr(date: string) {
-  return new Intl.DateTimeFormat("fr-FR", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    timeZone: "UTC",
-  }).format(new Date(`${date}T12:00:00Z`));
+export function formatDateFr(date: string, opts: Intl.DateTimeFormatOptions = { weekday: "long", day: "numeric", month: "long" }) {
+  return new Intl.DateTimeFormat("fr-FR", { ...opts, timeZone: "UTC" }).format(new Date(`${date}T12:00:00Z`));
 }
 
 export const isValidDate = (s: string) => /^\d{4}-\d{2}-\d{2}$/.test(s) && !isNaN(Date.parse(s));
+export const isValidTime = (s: string) => /^([01]\d|2[0-3]):[0-5]\d$/.test(s);
+
+/** Statut d'ouverture actuel (pour « Ouvert maintenant / Fermé »). */
+export function openStatus(at = new Date()) {
+  const now = parisNow(at);
+  const today = hoursFor(now.date);
+  const current = today.slots.find(([o, c]) => now.minutes >= toMinutes(o) && now.minutes < toMinutes(c));
+  if (current) return { open: true, label: `Ouvert maintenant · jusqu'à ${fmtTime(current[1])}` };
+  const later = today.slots.find(([o]) => toMinutes(o) > now.minutes);
+  if (later) return { open: false, label: `Fermé · ouvre à ${fmtTime(later[0])}` };
+  for (let i = 1; i <= 7; i++) {
+    const d = addDays(now.date, i);
+    const h = hoursFor(d);
+    if (h.slots.length) return { open: false, label: `Fermé · ouvre ${i === 1 ? "demain" : h.day.toLowerCase()} à ${fmtTime(h.slots[0][0])}` };
+  }
+  return { open: false, label: "Fermé" };
+}

@@ -1,0 +1,12 @@
+{
+  "_note": "Tarifs et durées. Les prix sont PROVISOIRES (lus sur l'affiche du salon) : remplacez-les puis passez aConfirmer à false.",
+  "services": [
+    { "id": "coupe", "name": "Coupe homme (dégradé)", "description": "Low, mid, high ou taper, finitions au rasoir.", "duration": 30, "price": 15, "aConfirmer": true },
+    { "id": "coupe-barbe", "name": "Coupe + barbe", "description": "Dégradé complet et barbe taillée, contours nets.", "duration": 45, "price": 20, "aConfirmer": true },
+    { "id": "contour-barbe", "name": "Contour + barbe", "description": "Contours de la coupe au rasoir et entretien de la barbe.", "duration": 20, "price": 12, "aConfirmer": true },
+    { "id": "barbe", "name": "Barbe seule", "description": "Taille et contours de la barbe.", "duration": 20, "price": 10, "aConfirmer": true },
+    { "id": "enfant", "name": "Coupe enfant", "description": "Pour les moins de 12 ans.", "duration": 25, "price": 12, "aConfirmer": true },
+    { "id": "coupe-couleur", "name": "Coupe + couleur noire", "description": "Coupe suivie d'une coloration noire intense.", "duration": 45, "price": 25, "aConfirmer": true },
+    { "id": "design", "name": "Design / motif", "description": "Traits, motifs et designs rasés, en supplément d'une coupe.", "duration": 10, "price": 5, "aConfirmer": true, "supplement": true }
+  ]
+}

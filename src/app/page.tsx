@@ -1,23 +1,25 @@
-import { Contact } from "@/components/Contact";
+import { BarberPole } from "@/components/Decor";
 import { Footer } from "@/components/Footer";
 import { Gallery } from "@/components/Gallery";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { Infos } from "@/components/Infos";
 import { Reviews } from "@/components/Reviews";
-import { Salon } from "@/components/Salon";
+import { SalonSection } from "@/components/SalonSection";
 import { Services } from "@/components/Services";
 
 export default function Home() {
   return (
     <>
       <Header />
-      <main>
+      <main id="contenu">
         <Hero />
+        <BarberPole className="h-1" />
+        <SalonSection />
         <Services />
-        <Salon />
         <Gallery />
         <Reviews />
-        <Contact />
+        <Infos />
       </main>
       <Footer />
     </>

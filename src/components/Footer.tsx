@@ -1,42 +1,38 @@
 import Link from "next/link";
 import { fullAddress, placeholders, site } from "@/data/site";
+import { BarberPole } from "./Decor";
 import { Logo } from "./Logo";
+import { Social } from "./Social";
 import { Tbc } from "./Tbc";
 
 export function Footer() {
   return (
-    <footer className="border-t border-ink-line bg-ink-soft">
-      <div className="barber-pole h-1.5" aria-hidden />
+    <footer className="border-t border-ink-line bg-ink pb-24 lg:pb-0">
+      <BarberPole />
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-14 md:grid-cols-3 md:px-6">
         <div>
           <Logo />
-          <p className="mt-4 max-w-xs text-sm text-muted">{site.tagline}</p>
+          <p className="mt-4 text-sm text-muted">{site.tagline}</p>
+          <Social className="mt-6" />
         </div>
         <div className="text-sm">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-gold">Contact</p>
+          <p className="eyebrow mb-3">Adresse</p>
           <p>{fullAddress}</p>
-          <p className="mt-1">
+          <p className="mt-2">
             <a href={`tel:${site.phoneHref}`} className="hover:text-gold">{site.phone}</a>
             <Tbc show={placeholders.phone} />
           </p>
-          <p className="mt-1">
-            <a href={`mailto:${site.email}`} className="hover:text-gold">{site.email}</a>
-            <Tbc show={placeholders.email} />
-          </p>
         </div>
         <div className="text-sm">
-          <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-gold">Suivez-nous</p>
-          <div className="flex gap-4">
-            <a href={site.social.instagram} target="_blank" rel="noopener noreferrer" className="hover:text-gold">Instagram</a>
-            <a href={site.social.snapchat} target="_blank" rel="noopener noreferrer" className="hover:text-gold">Snapchat</a>
-            <Tbc show={placeholders.social} />
-          </div>
-          <Link href="/mentions-legales" className="mt-6 block text-xs text-muted hover:text-cream">Mentions légales</Link>
+          <p className="eyebrow mb-3">Horaires<Tbc show={placeholders.hours} /></p>
+          <p>{site.hoursSummary}</p>
+          <p className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-xs text-muted">
+            <Link href="/mentions-legales" className="hover:text-cream">Mentions légales</Link>
+            <Link href="/confidentialite" className="hover:text-cream">Politique de confidentialité</Link>
+          </p>
         </div>
       </div>
-      <p className="border-t border-ink-line py-5 text-center text-xs text-muted">
-        © {new Date().getFullYear()} {site.name}. Tous droits réservés.
-      </p>
+      <p className="border-t border-ink-line py-5 text-center text-xs text-muted">© {site.name} {new Date().getFullYear()}</p>
     </footer>
   );
 }

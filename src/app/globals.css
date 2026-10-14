@@ -1,24 +1,21 @@
 @import "tailwindcss";
 
-/*
- * Charte graphique — d'après l'enseigne de la façade :
- * fond noir, « Flex » en serif blanc, « STYLE » doré, accents barbier bleu/blanc/rouge.
- * [À CONFIRMER] Remplacer par les codes couleur exacts du cahier des charges.
- */
+/* Charte graphique — brief §2 */
 @theme {
-  --color-ink: #0b0b0c;          /* noir principal */
-  --color-ink-soft: #151517;     /* surfaces */
-  --color-ink-line: #2a2a2e;     /* bordures */
-  --color-cream: #f5f1e8;        /* blanc cassé (texte) */
-  --color-muted: #a8a49b;        /* texte secondaire */
-  --color-gold: #c9a25f;         /* or de l'enseigne */
-  --color-gold-light: #e2c48d;
-  --color-gold-dark: #9c7a3e;
-  --color-barber-red: #c8102e;
-  --color-barber-blue: #1f3f8f;
+  --color-ink: #141414;          /* Fond principal : noir anthracite */
+  --color-ink-soft: #1f1f1f;     /* Fond secondaire : gris charbon */
+  --color-ink-line: #2e2e2e;     /* Bordures */
+  --color-cream: #f5f3ef;        /* Texte principal : blanc cassé */
+  --color-muted: #a3a3a3;        /* Texte secondaire : gris clair */
+  --color-gold: #c9a35b;         /* Accent principal : or doré */
+  --color-gold-light: #e2c88e;   /* Or pâle : survols, dégradés */
+  --color-barber-red: #c8102e;   /* Motif barber pole uniquement */
+  --color-barber-blue: #1e3a8a;  /* Motif barber pole uniquement */
 
   --font-display: var(--font-playfair), Georgia, serif;
   --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+
+  --radius-btn: 6px;
 }
 
 html {
@@ -33,21 +30,28 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-::selection {
-  background: var(--color-gold);
-  color: var(--color-ink);
+::selection { background: var(--color-gold); color: var(--color-ink); }
+
+:focus-visible { outline: 2px solid var(--color-gold); outline-offset: 3px; }
+
+@layer components {
+  /* Boutons : fond or, texte noir, coins 6px, survol or clair */
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-[6px] bg-gold px-7 py-3.5 text-sm font-bold uppercase tracking-[0.12em] text-ink transition-colors hover:bg-gold-light disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-[6px] border border-cream px-7 py-3.5 text-sm font-bold uppercase tracking-[0.12em] text-cream transition-colors hover:border-gold-light hover:text-gold-light;
+  }
+  .eyebrow { @apply text-xs font-bold uppercase tracking-[0.3em] text-gold; }
+  .title-caps { @apply font-sans font-extrabold uppercase tracking-[0.12em]; }
 }
 
-/* Rayures noir/blanc rappelant les murs du salon */
+/* Lignes horizontales des murs du salon (opacité faible) */
 .stripes {
-  background-image: repeating-linear-gradient(
-    180deg,
-    transparent 0 22px,
-    rgb(255 255 255 / 0.05) 22px 24px
-  );
+  background-image: repeating-linear-gradient(180deg, transparent 0 26px, rgb(255 255 255 / 0.045) 26px 28px);
 }
 
-/* Liseré enseigne barbier */
+/* Motif barber pole (seul usage du rouge et du bleu) */
 .barber-pole {
   background: repeating-linear-gradient(
     135deg,
@@ -56,9 +60,17 @@ body {
     var(--color-barber-blue) 20px 30px,
     var(--color-cream) 30px 40px
   );
+  background-size: 56.57px 56.57px;
 }
+.barber-pole-anim { animation: pole 1s linear infinite; }
+@keyframes pole { to { background-position: 56.57px 0; } }
+
+/* Apparition légère des sections */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.is-visible { opacity: 1; transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }

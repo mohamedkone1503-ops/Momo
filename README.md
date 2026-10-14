@@ -1,7 +1,7 @@
-# Flex Hairstyle — site vitrine
+# Flex Hairstyle : site vitrine
 
-Barber shop, 43 rue du Château d'Eau, Paris 10e.
-Next.js 15 (App Router) + Tailwind CSS 4 + TypeScript.
+Barber shop afro, 43 rue du Château d'Eau, 75010 Paris.
+Next.js 16 (App Router) + Tailwind CSS 4 + TypeScript, d'après `brief-site-flex-hairstyle`.
 
 ## Lancer en local
 
@@ -13,64 +13,81 @@ npm run dev                  # http://localhost:3000
 
 | Page | URL |
 |---|---|
-| Accueil (hero, tarifs, salon, galerie, contact) | `/` |
-| Réservation en ligne | `/reservation` |
-| Administration des rendez-vous | `/admin` |
-| Mentions légales | `/mentions-legales` |
+| One page (Accueil, Le salon, Tarifs, Galerie, Avis, Infos) | `/` |
+| Réservation en 4 étapes | `/reservation` |
+| Administration (RDV du jour/semaine, annulation, blocages) | `/admin` |
+| Mentions légales / Politique de confidentialité | `/mentions-legales`, `/confidentialite` |
 
 ## Arborescence
 
 ```
-public/photos/          Photos du salon (hero, salon, galerie)
+public/photos/              Photos du salon (hero, salon, galerie)
 src/
   app/
-    layout.tsx          Polices, métadonnées SEO, données structurées (BarberShop)
-    page.tsx            Page d'accueil
-    reservation/        Page de réservation
-    admin/              Espace admin (connexion + gestion des RDV)
-    mentions-legales/
-    api/slots           Créneaux disponibles
-    api/reservations    Enregistrement d'une demande de RDV
+    layout.tsx              Polices, SEO (title, description, Open Graph), Schema.org HairSalon
+    page.tsx                One page
+    reservation/            Page de réservation (interne ou outil externe)
+    admin/                  Espace admin protégé par mot de passe
+    api/slots               Créneaux (disponibles / pris)
+    api/reservations        Création d'un RDV + e-mails
+    mentions-legales/, confidentialite/
     robots.ts, sitemap.ts, icon.svg
-    globals.css         Charte graphique (couleurs, polices)
-  components/           Header, Hero, Services, Salon, Gallery, Contact, BookingForm…
-  data/                 ★ TOUS LES CONTENUS ET VALEURS À REMPLACER ★
-  lib/                  Créneaux, stockage des réservations, authentification admin
-data/reservations.json  Réservations (créé automatiquement, non versionné)
+    globals.css             Charte graphique (palette, boutons, motifs)
+  components/               Sections, header, footer, bannière cookies…
+    booking/                Assistant de réservation + calendrier
+  data/                     ★ TOUS LES CONTENUS MODIFIABLES ★
+  lib/                      Créneaux, stockage, e-mails, .ics, authentification
+data/                       reservations.json, blocks.json (créés automatiquement, non versionnés)
 ```
 
-## Valeurs provisoires « [À CONFIRMER] »
-
-Toutes regroupées dans `src/data/` (plus la palette dans `src/app/globals.css`
-et les infos légales dans `src/app/mentions-legales/page.tsx`).
-Pour les lister : `grep -rn "À CONFIRMER" src/`
-
-En mode développement, un badge pointillé **« À CONFIRMER »** s'affiche à côté
-de chaque donnée provisoire sur le site. Il disparaît en production.
+## Modifier les contenus : `src/data/`
 
 | Fichier | Contenu |
 |---|---|
-| `src/data/site.ts` | téléphone, e-mail, code postal, nom de domaine, réseaux sociaux, horaires, GPS |
-| `src/data/services.ts` | prestations, tarifs, durées (passez `aConfirmer: false` une fois validé) |
-| `src/data/content.ts` | tous les textes du site, accès métro |
-| `src/data/booking.ts` | nombre de RDV simultanés, délai minimum, horizon de réservation |
-| `src/data/reviews.ts` | avis clients (vide : la section est masquée tant qu'il n'y a pas de vrais avis) |
-| `src/data/gallery.ts` | liste et descriptions des photos |
-| `src/app/globals.css` | codes couleur (repris de l'enseigne : noir, or `#c9a25f`, blanc cassé) |
-| `.env.local` | `ADMIN_PASSWORD`, `ADMIN_SECRET` |
+| `services.json` | **Prestations, prix, durées** (fichier unique). Passez `aConfirmer` à `false` une fois validé |
+| `site.ts` | Téléphone, e-mail, horaires, accès métro, réseaux sociaux, lien avis Google, domaine, logo |
+| `barbers.ts` | Noms et photos des barbiers (= nombre de RDV simultanés) |
+| `reviews.ts` | Avis clients |
+| `gallery.ts` | Photos ; les emplacements `src: null` attendent des photos de coupes |
+| `content.ts` | Textes du site |
+| `booking.ts` | Règles de réservation, mode interne / externe (Planity, Booksy) |
+| `legal.ts` | Raison sociale, SIRET, hébergeur |
 
-## Réservations et admin
+### Valeurs provisoires « [À CONFIRMER] »
 
-- Les créneaux sont calculés à partir des horaires, de la durée de la prestation et du
-  nombre de fauteuils (`seats`). Un créneau plein disparaît.
-- Les demandes arrivent « En attente » dans `/admin`, où l'on peut les confirmer, annuler ou supprimer.
-- Stockage : fichier `data/reservations.json`. Cela convient sur un serveur classique (VPS, `npm start`).
-  Sur un hébergement serverless (Vercel, Netlify), il faut le remplacer par une base de données
-  (fonctions de `src/lib/reservations.ts`).
-- Aucune notification (e-mail/SMS) n'est envoyée pour l'instant.
+Liste complète : `grep -rn "À CONFIRMER" src/`.
+En `npm run dev`, un badge pointillé **« À CONFIRMER »** s'affiche sur le site à côté de chaque
+donnée provisoire. Il disparaît en production.
 
-## Mise en production
+À fournir (brief §7) : logo HD (`public/logo.svg` puis `logoSrc: "/logo.svg"` dans `site.ts`),
+grille tarifaire, horaires, téléphone/e-mail, comptes Instagram/Snapchat/TikTok, barbiers,
+photos de coupes, règles de réservation, raison sociale/SIRET, **vrais avis Google**
+(les 3 avis actuels sont les exemples du brief et ne doivent pas être publiés tels quels).
 
-```bash
-npm run build && npm start
-```
+## Réservation
+
+- Parcours : prestation (+ supplément design) → coiffeur (« Peu importe » ou un barbier) → date et créneau → coordonnées + consentement RGPD → confirmation avec fichier `.ics`.
+- Créneaux calculés à partir des horaires, de la durée totale et du planning de chaque barbier. Créneaux pris grisés.
+- « Peu importe » : le barbier libre le moins chargé de la journée est attribué automatiquement.
+- **Outil externe** : dans `src/data/booking.ts`, `mode: "externe"` + `external.url` remplace la page par un bouton (ou widget) Planity/Booksy.
+
+### E-mails
+
+Renseignez `SMTP_*` dans `.env.local` (Brevo, OVH, Gmail…) : e-mail de confirmation au client (avec `.ics`), notification au salon (`SALON_NOTIFY_EMAIL`), e-mail d'annulation depuis l'admin.
+Sans SMTP, rien n'est envoyé (message dans la console) et la page de confirmation l'indique.
+
+### Admin
+
+`/admin`, mot de passe `ADMIN_PASSWORD` (`.env.local`). Vues : aujourd'hui, 7 jours, tout à venir, passés.
+Annuler un RDV (avec e-mail au client), supprimer, bloquer un créneau ou une journée (tout le salon ou un barbier).
+
+## Mise en ligne
+
+- **Serveur classique (VPS)** : `npm run build && npm start`. Les données sont dans `data/`.
+- **Vercel** : le disque n'y est pas persistant. Remplacez `read`/`write` dans `src/lib/reservations.ts`
+  par une base (Vercel Postgres, Supabase, Upstash…), ou passez en mode `externe`.
+- Pensez à définir `ADMIN_PASSWORD`, `ADMIN_SECRET` et les variables SMTP chez l'hébergeur.
+
+## Qualité
+
+Lighthouse mobile (build de production) : performance 92–94, accessibilité 100, bonnes pratiques 100, SEO 100.
