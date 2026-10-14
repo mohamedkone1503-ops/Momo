@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+/*
+ * Charte graphique — d'après l'enseigne de la façade :
+ * fond noir, « Flex » en serif blanc, « STYLE » doré, accents barbier bleu/blanc/rouge.
+ * [À CONFIRMER] Remplacer par les codes couleur exacts du cahier des charges.
+ */
+@theme {
+  --color-ink: #0b0b0c;          /* noir principal */
+  --color-ink-soft: #151517;     /* surfaces */
+  --color-ink-line: #2a2a2e;     /* bordures */
+  --color-cream: #f5f1e8;        /* blanc cassé (texte) */
+  --color-muted: #a8a49b;        /* texte secondaire */
+  --color-gold: #c9a25f;         /* or de l'enseigne */
+  --color-gold-light: #e2c48d;
+  --color-gold-dark: #9c7a3e;
+  --color-barber-red: #c8102e;
+  --color-barber-blue: #1f3f8f;
+
+  --font-display: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+
+body {
+  background: var(--color-ink);
+  color: var(--color-cream);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-gold);
+  color: var(--color-ink);
+}
+
+/* Rayures noir/blanc rappelant les murs du salon */
+.stripes {
+  background-image: repeating-linear-gradient(
+    180deg,
+    transparent 0 22px,
+    rgb(255 255 255 / 0.05) 22px 24px
+  );
+}
+
+/* Liseré enseigne barbier */
+.barber-pole {
+  background: repeating-linear-gradient(
+    135deg,
+    var(--color-barber-red) 0 10px,
+    var(--color-cream) 10px 20px,
+    var(--color-barber-blue) 20px 30px,
+    var(--color-cream) 30px 40px
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
